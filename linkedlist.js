@@ -7,31 +7,38 @@ class Node {
 
 class linkedList {
   constructor(data) {
-    this.firstNode = new Node(data);
+    this.firstNode = new Node(data);    
     this.numNodes = 1;
   }
-
+  
   append(data) {
-    if (this.firstNode === null) {
+    if(this.firstNode === null){
       this.firstNode = new Node(data);
-    } else {
+    }else{
       const newNode = new Node(data);
       let temp = this.head;
-      while (temp.next !== null) {
+      while(temp.next !== null){
         temp = temp.next;
-      }
+      }      
       temp.next = newNode;
       this.numNodes++
-    }
+    }    
   }
-
+  
   prepend(data) {
     let temp = this.head;
     this.firstNode = new Node(data);
     this.head.next = temp;
     this.numNodes++
   }
-
+  
+  pop() {
+    let temp = this.head
+    this.firstNode = this.firstNode.next
+    this.numNodes--
+    return temp.data
+  }
+  
   get head() {
     if (this.firstNode !== null) {
       return this.firstNode;
@@ -39,9 +46,9 @@ class linkedList {
       return undefined
     }    
   }
-
+  
   tail() {
-    let temp = newList.head
+    let temp = this.head
     if (temp === null) {
       return undefined
     }    
@@ -50,9 +57,9 @@ class linkedList {
     };
     return temp
   }
-
+  
   at(index) {
-    let temp = newList.head;
+    let temp = this.head;
     let cur = 0;
     if (temp === null || index > this.numNodes-1 || index < 0 ) {
       return undefined
@@ -63,16 +70,10 @@ class linkedList {
     };
     return temp.data
   }
-
-  pop() {
-    let temp = this.head;
-    this.firstNode = this.firstNode.next;
-    this.numNodes--;
-    return temp.data;
-  }
-
+  
   contains(value) {
-    let temp = newList.head;    
+    let temp = this.head;
+    let cur = 0;
     let status = false
     if (temp === null ) {
       return undefined
@@ -88,7 +89,7 @@ class linkedList {
   }
 
   findIndex(value) {
-    let temp = newList.head;
+    let temp = this.head;
     let cur = 0;
     if (temp === null ) {
       return undefined
@@ -102,10 +103,11 @@ class linkedList {
     };
     
     return (cur<this.numNodes) ? cur : undefined;
+    // if(cur>=this.numNodes) return cur
   }
-
+  
   toString() {
-    let temp = newList.head;
+    let temp = this.head;
     let text = ''
     if (temp === null ) {
       return arr
@@ -115,18 +117,19 @@ class linkedList {
       text+=`(${temp.data}) -> `  
       temp = temp.next; 
     };
-    return text+'null'
+    return text+'null' 
   }
-
 }
 
-const newList = new linkedList('oldfirstNode');
-newList.append('oldsecondNode')
-newList.prepend('newfirstNode')
-newList.prepend('newnewfirstNode')
+const list = new linkedList("dog");
 
-console.log(newList.tail().data)
-console.log(newList.findIndex('oldfirstNode'))
-console.log(newList.toString())
-console.log(newList.pop())
-console.log(newList.toString())
+list.append("cat");
+list.append("parrot");
+list.append("hamster");
+list.append("snake");
+list.append("turtle");
+console.log(list.toString())
+
+
+
+
