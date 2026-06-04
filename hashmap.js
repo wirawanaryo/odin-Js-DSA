@@ -9,16 +9,16 @@ class HashMap {
 
   hash(key) {
     let hashCode = 0;
-    const primeNumber = 31;
+    // const primeNumber = 31;
 
-    for (let i = 0; i < key.length; i++) {
-      hashCode = (hashCode * primeNumber + key.charCodeAt(i)) % this.capacity;
-    }
+    // for (let i = 0; i < key.length; i++) {
+    //   hashCode = (hashCode * primeNumber + key.charCodeAt(i)) % this.capacity;
+    // }
     return hashCode;
   }
 
   set(key, value) {
-    const index = this.hash(key);
+    const index = this.hash(key);    
 
     if (!this.buckets[index]) {
       this.buckets[index] = new linkedList();  
@@ -37,11 +37,32 @@ class HashMap {
     const index = this.hash(key);
     
     if (!this.buckets[index]) {
-      return 'key value pair doesnt exist'
+      return null
     }
     const node = this.buckets[index].findbyKey(key);    
     
-    return node !== null ? node.data[1] : 'the node is empty';
+    return node !== null ? node.data[1] : null;
+  }
+
+  has(key) {
+    const index = this.hash(key);
+    
+    if (!this.buckets[index]) {
+      return false
+    }
+    const node = this.buckets[index].findbyKey(key);    
+    
+    return node !== null ? true : false;
+  }
+
+  clear(key){
+    const index = this.hash(key);
+    if (!this.has(key)) {
+      return false
+    } else {
+      this.buckets[index].removebyKey(key);  
+      return true
+    }    
   }
 }
 
@@ -50,8 +71,14 @@ hm.set('apple', 'red')
 console.log(hm.get('apple'))
 hm.set('apple', 'purple')
 hm.set('banana', 'yellow')
-
-console.log(hm.get('apple'))
-console.log(hm.get('banana'))
-// console.log(hm.buckets[0].contains('apple'))
+hm.set('orange', 'orange')
+hm.clear('orange')
 console.log(hm.buckets)
+
+// console.log(hm.get('apple'))
+// console.log(hm.get('banana'))
+// console.log(hm.buckets[0].contains('apple'))
+// console.log(hm.has('apple'))
+// console.log(hm.get('ass'))
+// console.log(hm.clear('banana'))
+// console.log(hm.has('banana'))

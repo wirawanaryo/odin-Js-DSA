@@ -91,7 +91,7 @@ class linkedList {
   }
 
   findbyKey(key) {
-    let temp = this.head;
+    let temp = this.firstNode;
     let cur = 0;    
     if (temp === null ) {
       return temp
@@ -103,6 +103,26 @@ class linkedList {
       temp = temp.next;    
     };
     return temp
+  }
+
+  removebyKey(key){
+    let temp = this.firstNode;
+    if (temp.data[0]===key) {
+      temp = temp.next
+      this.firstNode = temp
+      return;
+    }
+
+    let before = null;
+    while (temp !== null) {        
+      if (temp.data[0]===key) {        
+        break;
+      }       
+      before =  temp;
+      temp = temp.next; 
+    };
+    before.next = temp.next
+    temp.next = null;
   }
 
   findIndex(value) {

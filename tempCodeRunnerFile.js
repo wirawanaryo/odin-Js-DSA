@@ -1,1 +1,1 @@
-head
+const index = this.hash(key);
