@@ -57,20 +57,7 @@ class linkedList {
       temp = temp.next;    
     };
     return temp
-  }
-  
-  at(index) {
-    let temp = this.firstNode;
-    let cur = 0;
-    if (temp === null || index > this.numNodes-1 || index < 0 ) {
-      return undefined
-    }    
-    while (temp.next !== null && cur < index) {  
-      temp = temp.next;    
-      cur++;
-    };
-    return temp.data
-  }
+  } 
   
   contains(key) {
     let status = false
@@ -110,6 +97,7 @@ class linkedList {
     if (temp.data[0]===key) {
       temp = temp.next
       this.firstNode = temp
+      this.numNodes = 0;
       return;
     }
 
@@ -123,31 +111,15 @@ class linkedList {
     };
     before.next = temp.next
     temp.next = null;
+    //this below only allowed when the method called from hashmap class, if not it should be deleted
+    this.numNodes--;
   }
 
-  findIndex(value) {
-    let temp = this.head;
-    let cur = 0;
-    if (temp === null ) {
-      return undefined
-    }    
-    while (temp !== null) {        
-      if (temp.data===value) {
-        break;
-      }
-      temp = temp.next; 
-      cur++
-    };
-    
-    return (cur<this.numNodes) ? cur : undefined;
-    // if(cur>=this.numNodes) return cur
-  }
-  
   toString() {
     let temp = this.head;
     let text = ''
     if (temp === null ) {
-      return arr
+      return text
     }    
     // ( value ) -> ( value ) -> ( value ) -> null
     while (temp !== null) { 
@@ -155,6 +127,19 @@ class linkedList {
       temp = temp.next; 
     };
     return text+'null' 
+  }
+
+  getAllDatas() {
+    let temp = this.head;
+    let arr = []
+    if (temp === null ) {
+      return arr
+    } 
+    while (temp !== null) { 
+      arr.push(temp.data);
+      temp = temp.next; 
+    };
+    return arr 
   }
 }
 

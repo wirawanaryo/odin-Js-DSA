@@ -110,7 +110,7 @@ class linkedList {
     let temp = this.head;
     let text = ''
     if (temp === null ) {
-      return arr
+      return text
     }    
     // ( value ) -> ( value ) -> ( value ) -> null
     while (temp !== null) { 
