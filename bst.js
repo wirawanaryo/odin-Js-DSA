@@ -13,7 +13,7 @@ class Tree {
   }
 
   buildTree(arr) {
-    const sorted = [...new Set(arr)].sort((a, b) => a - b);
+    const sorted = [...new Set(arr)].sort((a, b) => a - b);    
     if (sorted.length === 0) return null;
 
     const mid = Math.floor(sorted.length / 2);
@@ -51,16 +51,24 @@ class Tree {
   }
 
   includes(value) {
-    const arr = []
-    function GetInorder(node) {
-      if (node !== null) {
-        GetInorder(node.left);
-        arr.push(node.data);
-        GetInorder(node.right);
+    // const arr = []
+    // function GetInorder(node) {
+    //   if (node !== null) {
+    //     GetInorder(node.left);
+    //     arr.push(node.data);
+    //     GetInorder(node.right);
+    //   }
+    // };
+    // GetInorder(this.root);
+    // return arr.includes(value) ? true : false;
+    let res = false
+    this.levelOrderForEach((data) => {
+      if (data === value) {
+        res = true
       }
-    };
-    GetInorder(this.root);
-    return arr.includes(value) ? true : false;
+    })
+
+    return res
   }
 
   deleteItem(value) {
@@ -124,13 +132,145 @@ class Tree {
       if (current.left) {
         queue.push(current.left);
       }
-
       if (current.right) {
         queue.push(current.right);
       }
     }
   }
 
+  inOrderForEach(callback) {
+    if (!callback) {
+      throw new Error('Must Add a Callback!');
+    }
+
+    const inOrder = (node) => {
+      if (node === null) {
+        return;
+      }
+      inOrder(node.left);
+      callback(node.data)
+      inOrder(node.right);
+    }
+
+    inOrder(this.root);
+  };
+
+  preOrderForEach(callback) {
+    if (!callback) {
+      throw new Error('Must Add a Callback!');
+    }
+
+    const preOrder = (node) => {
+      if (node === null) {
+        return;
+      }
+      callback(node.data);
+      preOrder(node.left);
+      preOrder(node.right);
+    }
+
+    preOrder(this.root);
+  };
+
+  postOrderForEach(callback) {
+    if (!callback) {
+      throw new Error('Must Add a Callback!');
+    }
+
+    const postOrder = (node) => {
+      if (node === null) {
+        return;
+      }
+      postOrder(node.left);
+      postOrder(node.right);
+      callback(node.data);
+    }
+
+    postOrder(this.root);
+  };
+
+  height(value) {
+    const queue = [this.root];
+
+    const heightCounter = (node) => {
+      if (node === null) return 0;
+      return 1 + Math.max(heightCounter(node.left), heightCounter(node.right));
+    };
+
+    while (queue.length > 0) {
+      const current = queue.shift();
+
+      if (current.data === value) {
+        return heightCounter(current) - 1;
+      }
+      if (current.left) {
+        queue.push(current.left);
+      }
+      if (current.right) {
+        queue.push(current.right);
+      }
+    }
+    return undefined;
+  }
+
+  depth(value) {
+    if (!this.root) return undefined;
+    const queue = [[this.root, 0]];
+
+    while (queue.length) {
+      const [node, depth] = queue.shift();
+      if (node.data === value) {
+        return depth;
+      }
+      if (node.left) {
+        queue.push([node.left, depth + 1]);
+      }
+      if (node.right) {
+        queue.push([node.right, depth + 1]);
+      }
+    }
+    return undefined;
+  }
+
+  isBalanced() {
+    
+    // const heightCounter = (node) => {
+    //   if (node === null) return 0;
+    //   return 1 + Math.max(heightCounter(node.left), heightCounter(node.right));
+    // };
+    // const checker = (node) => {
+    //   if (node === null) return true;
+    //   const lHeight = heightCounter(node.left);
+    //   const rHeight = heightCounter(node.right);
+    //   if (Math.abs(lHeight - rHeight) > 1) return false;
+    //   return checker(node.left) && checker(node.right);
+    // }
+    // return checker(this.root);
+    const check = (node) => {
+      if (node === null) return 0;
+
+      const left = check(node.left);
+      if (left === -1) return -1;
+
+      const right = check(node.right);
+      if (right === -1) return -1;
+
+      if (Math.abs(left - right) > 1) return -1;
+
+      return 1 + Math.max(left, right);
+    };
+
+    return check(this.root) !== -1;
+  }
+
+  reBalanced(){
+    const newArr = []
+    this.inOrderForEach((value)=>{
+      newArr.push(value);
+    })
+
+    this.root = this.buildTree(newArr);
+  }
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -143,10 +283,16 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
 }
 
-const test = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+const test = new Tree([1, 7,4,2,23])
 prettyPrint(test.root)
-// console.log(test.includes(0))
-test.levelOrderForEach((value)=>{
-  console.log(value);
-})
+test.deleteItem(7)
+test.deleteItem(23)
+prettyPrint(test.root)
+console.log(test.isBalanced())
+test.reBalanced()
+prettyPrint(test.root)
+console.log(test.isBalanced())
+
+
+
 
